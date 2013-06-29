@@ -139,8 +139,7 @@ div.live-menu
         }
 
         .live-action:active {
-            transform: translate(1px, 1px);
-            -webkit-transform: translate(1px, 1px);
+            background: #444;
         }
 
 /*===================================================================================================================*/
@@ -174,4 +173,6 @@ div.live-menu
     background: #5a5a5a;
 }
 
-
+.live-dark .live-action:active {
+    background: #414141;
+}
