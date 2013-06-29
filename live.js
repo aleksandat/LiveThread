@@ -2,6 +2,11 @@
 
 "use strict";
 
+var OPTION_FAIL_LIMIT   = parseInt(localStorage.LiveThread_FAIL_LIMIT, 10) || 8,
+    OPTION_CHECk_EDITS  = !!localStorage.LiveThread_CHECk_EDITS  || true,
+    OPTION_CONFIRM_EXIT = !!localStorage.LiveThread_CONFIRM_EXIT || true,
+    OPTION_USE_HISTORY  = !!localStorage.LiveThread_USE_HISTORY  || true;
+
 var TEXT_RESPONSE_ERROR = "Response error",
     TEXT_PARSE_ERROR    = "Parse error",
     TEXT_NO_POSTS       = "No new posts",
@@ -29,14 +34,12 @@ var TEXT_RESPONSE_ERROR = "Response error",
 
 var STATE_LIVE          = false,
     STATE_PENDING       = false,
+    STATE_INTERVAL      = 6,
     STATE_FAIL_COUNT    = 0,
-    STATE_FAIL_LIMIT    = 4,
-    STATE_INTERVAL      = 60,
     STATE_URL           = window.location.href,
     STATE_NEXTPAGE      = false,
     STATE_TIMER         = null,
-    STATE_DELAY         = null,
-    STATE_CHECK_EDITS   = true;
+    STATE_DELAY         = null;
 
 var GAF_pagenavHead     = document.querySelectorAll("a.large-button[href^=newreply]")[0].parentNode.nextElementSibling,
     GAF_pagenavFoot     = document.querySelectorAll("a.large-button[href^=newreply]")[1].parentNode.nextElementSibling,
@@ -201,7 +204,7 @@ function checkReponse(response) {
                 var newpost = true;
                 curPosts.some(function (b) {
                     if (a.id === b.id) {
-                        if (STATE_CHECK_EDITS) {
+                        if (OPTION_CHECk_EDITS) {
                             try {
                                 var ax = a.querySelector("div.post").innerHTML,
                                     bx = b.querySelector("div.post").innerHTML;
@@ -356,7 +359,7 @@ function updateStart() {
         return;
     }
 
-    if (STATE_FAIL_COUNT > STATE_FAIL_LIMIT) {
+    if (STATE_FAIL_COUNT > OPTION_FAIL_LIMIT) {
         return updateStop();
     }
 
@@ -379,7 +382,11 @@ function updateStart() {
 
     UI_menu.removeAttribute("hidden");
 
-    window.addEventListener("beforeunload", confirmExit, false);
+    if (OPTION_CONFIRM_EXIT) {
+        window.addEventListener("beforeunload", confirmExit, false);
+    } else {
+        window.removeEventListener("beforeunload", confirmExit, false);
+    }
 }
 
 function updateToggle() {
@@ -437,3 +444,10 @@ if (GAF_next) {
     STATE_NEXTPAGE = true;
     STATE_URL = GAF_next.href;
 }
+
+/*
+localStorage.LiveThread_FAIL_LIMIT
+localStorage.LiveThread_CHECk_EDITS
+localStorage.LiveThread_CONFIRM_EXIT
+localStorage.LiveThread_USE_HISTORY
+*/
