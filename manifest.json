@@ -3,7 +3,7 @@
     "content_security_policy": "default-src 'self';",
     "name": "NeoGAF Live Thread",
     "description": "Automatically update a thread with new posts.",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "icons": {
         "128": "128.png",
         "48": "48.png",

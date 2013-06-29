@@ -2,10 +2,10 @@
 
 "use strict";
 
-var OPTION_FAIL_LIMIT   = parseInt(localStorage.LiveThread_FAIL_LIMIT, 10) || 8,
-    OPTION_CHECk_EDITS  = !!localStorage.LiveThread_CHECk_EDITS  || true,
-    OPTION_CONFIRM_EXIT = !!localStorage.LiveThread_CONFIRM_EXIT || true,
-    OPTION_USE_HISTORY  = !!localStorage.LiveThread_USE_HISTORY  || true;
+var OPTION_FAIL_LIMIT   = Number(localStorage.LiveThread_FAIL_LIMIT) || 8,
+    OPTION_CHECk_EDITS  = true, // localStorage.LiveThread_CHECk_EDITS,  // TODO
+    OPTION_CONFIRM_EXIT = true, // localStorage.LiveThread_CONFIRM_EXIT, // TODO
+    OPTION_USE_HISTORY  = true; // localStorage.LiveThread_USE_HISTORY;  // TODO
 
 var TEXT_RESPONSE_ERROR = "Response error",
     TEXT_PARSE_ERROR    = "Parse error",
@@ -34,7 +34,7 @@ var TEXT_RESPONSE_ERROR = "Response error",
 
 var STATE_LIVE          = false,
     STATE_PENDING       = false,
-    STATE_INTERVAL      = 6,
+    STATE_INTERVAL      = 60,
     STATE_FAIL_COUNT    = 0,
     STATE_URL           = window.location.href,
     STATE_NEXTPAGE      = false,
