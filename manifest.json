@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    "content_security_policy": "default-src 'self';",
+    "name": "NeoGAF Live Thread",
+    "description": "Automatically update a thread with new posts.",
+    "version": "2.0",
+    "icons": {
+        "128": "128.png",
+        "48": "48.png",
+        "16": "16.png"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "content_scripts": [{
+        "matches": [
+            "*://*.neogaf.com/forum/showthread*",
+            "*://*.neogaf.net/forum/showthread*"
+        ],
+        "js": [
+            "live.js"
+        ],
+        "css": [
+            "live.css"
+        ]
+    }]
+}
