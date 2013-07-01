@@ -1,6 +1,19 @@
-/*jslint browser: true, es5: true, indent: 4 */
+// ==UserScript==
+// @name NeoGAF Live Thread
+// @namespace http://www.neogaf.com
+// @version 2.0.3
+// @description Automatically update a thread with new posts
+// @include http://www.neogaf.com/forum/showthread*
+// @include http://www.neogaf.net/forum/showthread*
+// ==/UserScript==
+
+(function () {
 
 "use strict";
+
+var css = document.createElement("style");
+css.textContent = '@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}@-webkit-keyframes spin{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}.live-toggle{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNTYgMjgiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzPjxwYXRoIGlkPSJpY29uIiBkPSJNMTAuOTkyLDguNzkxYzEuOTc0LTEuMTQsNC4zMjYtMS4wMzIsNi4xNDQsMC4wNzdsLTAuNjEyLDIuMjg3IGwxLjA0Mi0wLjYwMmwwLjc0NC0wLjQyOWwwLjE5My0wLjExMmwyLjEwNS0xLjIxNXYwbDAuMDgzLTAuMDQ4bC0yLjQwNi00LjE2N2wtMC41MDgsMS44OTYgYy0yLjQ0Ny0xLjIyNi01LjQ0MS0xLjI0MS03Ljk4NywwLjIyOWMtMy42NzIsMi4xMi01LjEzMyw2LjU4OC0zLjYsMTAuNDE0bDIuMTA1LTEuMjE2QzcuNDA1LDEzLjI0OCw4LjQ3MywxMC4yNDYsMTAuOTkyLDguNzkxeiBNMjEuODExLDEwLjg4bC0yLjEwNSwxLjIxNWMwLjg5LDIuNjU3LTAuMTc5LDUuNjU5LTIuNjk4LDcuMTE0Yy0xLjk3NCwxLjE0MS00LjMyNiwxLjAzMy02LjE0NC0wLjA3NmwwLjYxMi0yLjI4N2wtMS4wNDIsMC42MDIgIGgwTDcuMzEsMTkuMjUybDIuNDA2LDQuMTY4bDAuNTA4LTEuODk3YzIuNDQ3LDEuMjI2LDUuNDQxLDEuMjQxLDcuOTg3LTAuMjI5QzIxLjg4MywxOS4xNzMsMjMuMzQ0LDE0LjcwNiwyMS44MTEsMTAuODh6Ii8+PC9kZWZzPjx1c2UgeGxpbms6aHJlZj0iI2ljb24iIGZpbGw9IiM5OTkiLz48dXNlIHhsaW5rOmhyZWY9IiNpY29uIiBmaWxsPSIjZjkwIiB4PSIyOCIvPjwvc3ZnPg==") 0 0 / 56px 28px no-repeat;border:0;display:inline-block;float:right;font-size:0;height:28px;margin:0 0 0 8px;outline:0;padding:0;width:28px}.live-toggle.on{animation:spin 1s linear infinite;-webkit-animation:spin 1s linear infinite;background-position:-28px 0}.live-spacer{background:#01518e;text-align:center;overflow:auto;padding:4px}.live-spacer-page{color:#fff}.live-spacer-close{background:transparent url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PHBvbHlnb24gZmlsbD0iI2ZmZiIgcG9pbnRzPSIxNiw2LjQwMSAxMy41OTgsNCAxMCw3LjU5OSA2LjQwMiw0IDQsNi40MDEgNy41OTgsMTAgNCwxMy41OTkgNi40MDIsMTYuMDAxIDEwLDEyLjQwMSAxMy41OTgsMTYuMDAxIDE2LDEzLjU5OSAxMi40LDEwICIvPjwvc3ZnPg==") 0 0 / 20px 20px no-repeat;display:block;float:right;font-size:0;height:20px;opacity:.4;width:20px}.live-spacer-close:focus,.live-spacer-close:hover{opacity:1}.live-menu[hidden]{display:none !important}.live-menu,.live-info:hover .live-options{background:#eee;border-radius:3px}.live-menu{margin:auto;text-align:center;padding:8px 0 4px 0;width:220px}.live-info{position:relative}.live-info:hover .live-options{display:block}.live-options{position:absolute;bottom:100%;width:100%;display:none;padding:8px 0}.live-option{background:#ddd;border:0;font-weight:bold}.live-option.on{background:#bbb}.live-message{padding:8px 0}.live-actions{padding:8px 0}.live-action{background:#1b639a;border:0;border-radius:3px;color:#eee;font-weight:bold;margin:0 2px;padding:8px;text-transform:capitalize;width:70px}.live-action:focus,.live-action:hover{background:#01518e}.live-action:active{background:#444}.live-dark .live-spacer{background:#414141}.live-dark .live-menu,.live-dark .live-info:hover .live-options{background:#282828}.live-dark .live-option{background:#373737;color:#e6e6e6}.live-dark .live-option.on{background:#474747;color:#e6e6e6}.live-dark .live-action{background:#505050;color:#e6e6e6}.live-dark .live-action:focus,.live-dark .live-action:hover{background:#5a5a5a}.live-dark .live-action:active{background:#414141}';
+document.head.appendChild(css);
 
 var OPTION_FAIL_LIMIT   = Number(localStorage.LiveThread_FAIL_LIMIT) || 8,
     OPTION_CONFIRM_EXIT = (localStorage.LiveThread_CONFIRM_EXIT === "true") ? true : false,
@@ -454,3 +467,5 @@ if (GAF_next) {
     STATE_NEXTPAGE = true;
     STATE_URL = GAF_next.href;
 }
+
+}());
