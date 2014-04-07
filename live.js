@@ -1,4 +1,4 @@
-/*jslint browser: true, es5: true, indent: 4 */
+/*jslint browser: true, indent: 4 */
 
 "use strict";
 
@@ -119,13 +119,13 @@ function checkReponse(response) {
     function updatePage(posts, spacer) {
 
         function fullImage(img) {
-            img.addEventListener("click", function() {
+            img.addEventListener("click", function () {
                 this.classList.toggle("full-image");
             }, false);
         }
 
         function spoiler(el) {
-            el.addEventListener("click", function() {
+            el.addEventListener("click", function () {
                 this.classList.toggle("show");
             }, false);
         }
@@ -136,7 +136,7 @@ function checkReponse(response) {
             fragment.appendChild(spacer);
         }
 
-        posts.forEach(function(post) {
+        posts.forEach(function (post) {
             [].forEach.call(post.querySelectorAll("img"), fullImage);
             [].forEach.call(post.querySelectorAll(".spoiler"), spoiler);
             fragment.appendChild(post);
@@ -170,8 +170,8 @@ function checkReponse(response) {
         close.setAttribute("title", TEXT_SPACER_CLOSE);
         close.textContent = TEXT_SPACER_CLOSE;
 
-        close.addEventListener("click", function() {
-            [].some.call(document.querySelectorAll("#posts > *"), function(node) {
+        close.addEventListener("click", function () {
+            [].some.call(document.querySelectorAll("#posts > *"), function (node) {
                 if (node !== spacer) {
                     node.parentNode.removeChild(node);
                     return false;
@@ -269,7 +269,7 @@ function confirmExit(e) {
 }
 
 function updateComplete() {
-    setTimeout(function() {
+    setTimeout(function () {
         STATE_PENDING = false;
         UI_message.textContent = TEXT_STOPPED;
         if (STATE_LIVE) {
@@ -292,11 +292,11 @@ function updateRequest() {
         var r = new XMLHttpRequest();
         r.open("GET", STATE_URL, true);
         r.responseType = "document";
-        r.onload = function() {
+        r.onload = function () {
             checkReponse(r.response);
             updateComplete();
         };
-        r.onerror = function() {
+        r.onerror = function () {
             STATE_FAIL_COUNT += 1;
             updateComplete();
         };
