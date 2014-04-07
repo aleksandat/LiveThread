@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name NeoGAF Live Thread
 // @namespace http://www.neogaf.com
-// @version 2.0.3
+// @version 2.1
 // @description Automatically update a thread with new posts
 // @include http://www.neogaf.com/forum/showthread*
 // @include http://www.neogaf.net/forum/showthread*
@@ -160,6 +160,10 @@ function checkReponse(response) {
         STATE_FAIL_COUNT = 0;
 
         UI_message.textContent = posts.length + ((posts.length > 1) ? TEXT_POSTS_ADDED : TEXT_POST_ADDED);
+
+        try {
+            document.dispatchEvent(new CustomEvent("LiveThreadUpdate"));
+        } catch (ignore) {}
     }
 
     function createSpacer(pagenav, url) {
