@@ -1,4 +1,5 @@
 /*jslint browser: true, indent: 4 */
+/*global CustomEvent */
 
 "use strict";
 
@@ -147,6 +148,10 @@ function checkReponse(response) {
         STATE_FAIL_COUNT = 0;
 
         UI_message.textContent = posts.length + ((posts.length > 1) ? TEXT_POSTS_ADDED : TEXT_POST_ADDED);
+
+        try {
+            document.dispatchEvent(new CustomEvent("LiveThreadUpdate"));
+        } catch (ignore) {}
     }
 
     function createSpacer(pagenav, url) {
